@@ -6,10 +6,12 @@ document.addEventListener("DOMContentLoaded", () => {
   chatForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const userMessage = userInput.value.trim();
-    if (userMessage) {
-      addMessage(userMessage, "user");
+    const responseFromApi = getResponseFromApi(userMessage);
+
+    if (responseFromApi) {
+      addMessage(responseFromApi, "user");
       userInput.value = "";
-      processUserMessage(userMessage);
+      processUserMessage(responseFromApi);
     }
   });
 
@@ -29,6 +31,35 @@ document.addEventListener("DOMContentLoaded", () => {
       botResponse = "Olá! Como posso ajudar você hoje?";
     }
 
+  }
+
+  async function getResponseFromApi(message) {
+    const apiKey = document.getElementById("api-key").value;
+
+    if(!apiKey) {
+      alert("Chave inválida");
+      return;
+    }
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: "user", content: message }],
+      }),
+    });
+
+    const data = await response.json();
+
+    if(data.choices && data.choices.length > 0) {
+      const botResponse = data.choices[0].message.content.trim();
+      return botResponse;
+    } else {
+      addMessage("Erro ao obter resposta", "bot");
+    }
   }
 
   addMessage("Olá! Sou seu Assistente de IA. Como posso ajudar?", "bot");
