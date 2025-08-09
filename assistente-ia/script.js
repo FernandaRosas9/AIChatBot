@@ -1,4 +1,5 @@
-const responses = JSON.parse(localStorage.getItem("respostas"));
+const responses = JSON.parse(localStorage.getItem("respostas")) || [];
+const questions = JSON.parse(localStorage.getItem("questoes")) || [];
 
 document.addEventListener("DOMContentLoaded", () => {
   const chatForm = document.getElementById("chat-form");
@@ -8,6 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const darkModeToggle = document.getElementById("dark-mode-toggle");
   const darkModeIcon = document.querySelector("#dark-mode-toggle i");
   const clearChatButton = document.getElementById("clear-chat-button");
+
+  for (let i = 0, len = responses.length; i < len; i++) {
+    addMessage(questions[i], "user");
+    addMessage(responses[i], "bot");
+  }
 
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme === "dark") {
@@ -39,6 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const userMessage = userInput.value.trim();
 
     if (userMessage) {
+      questions.push(userMessage);
+      localStorage.setItem("questoes", JSON.stringify(questions));
       addMessage(userMessage, "user");
       getResponseFromApi(userMessage);
       userInput.value = "";
@@ -47,7 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   clearChatButton.addEventListener("click", () => {
     chatBox.innerHTML = "";
-    addMessage("Olá! Sou seu Assistente de IA. Como posso ajudar?", "bot");
+    localStorage.clear();
+    addMessage("Olá! Eu sou a nIAh, sua Assistente de IA. Como posso te ajudar hoje?", "bot");
   });
 
   darkModeToggle.addEventListener("click", () => {
@@ -66,16 +75,13 @@ document.addEventListener("DOMContentLoaded", () => {
   async function getResponseFromApi(message) {
     const apiKey = document.getElementById("api-key").value.trim();
 
-    if (!apiKey) {
+    if (!apiKey || apiKey.length > 50) {
       showAlert("Chave inválida. Por favor, insira sua chave.");
       return;
     }
 
     const loadingMessage = addMessage("Digitando", "bot");
     loadingMessage.classList.add("loading");
-
-    if (apiKey.length < 50) {
-    }
 
     try {
       const response = await fetch(
@@ -105,6 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (botMessageText) {
         loadingMessage.innerHTML = marked.parse(botMessageText);
 
+        loadingMessage.classList.add("api-responses");
         loadingMessage.id = "api-response";
         const buttonCopy = document.createElement("button");
         buttonCopy.classList.add("button-copy");
@@ -112,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
         chatBox.appendChild(buttonCopy);
 
         buttonCopy.addEventListener("click", () => {
-          const response = document.getElementById("api-response").innerText;
+          const response = document.getElementsByClassName("api-responses")[document.getElementsByClassName("api-responses").length - 1].innerText;
           navigator.clipboard.writeText(response);
         });
 
@@ -130,8 +137,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  addMessage(
-    "Olá! Eu sou a nIAh, sua Assistente de IA. Como posso te ajudar hoje?",
-    "bot"
-  );
+  if (responses.length <= 0) {
+    addMessage(
+      "Olá! Eu sou a nIAh, sua Assistente de IA. Como posso te ajudar hoje?",
+      "bot"
+    );
+  }
 });
