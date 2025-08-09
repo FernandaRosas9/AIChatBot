@@ -7,8 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const customAlert = document.getElementById("custom-alert");
   const darkModeToggle = document.getElementById("dark-mode-toggle");
   const darkModeIcon = document.querySelector("#dark-mode-toggle i");
-  const clearChatButton = document.getElementById("clear-chat-button");
 
+  
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme === "dark") {
     document.body.classList.add("dark-mode");
@@ -45,11 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  clearChatButton.addEventListener("click", () => {
-    chatBox.innerHTML = "";
-    addMessage("Olá! Sou seu Assistente de IA. Como posso ajudar?", "bot");
-  });
-
+  
   darkModeToggle.addEventListener("click", () => {
     document.body.classList.toggle("dark-mode");
     if (document.body.classList.contains("dark-mode")) {
@@ -72,10 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const loadingMessage = addMessage("Digitando", "bot");
-    loadingMessage.classList.add("loading");
-
-    if (apiKey.length < 50) {
-    }
+    loadingMessage.classList.add("loading"); 
 
     try {
       const response = await fetch(
@@ -104,20 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
       loadingMessage.classList.remove("loading");
       if (botMessageText) {
         loadingMessage.innerHTML = marked.parse(botMessageText);
-
-        loadingMessage.id = "api-response";
-        const buttonCopy = document.createElement("button");
-        buttonCopy.classList.add("button-copy");
-        buttonCopy.textContent = "Copiar";
-        chatBox.appendChild(buttonCopy);
-
-        buttonCopy.addEventListener("click", () => {
-          const response = document.getElementById("api-response").innerText;
-          navigator.clipboard.writeText(response);
-        });
-
-        responses.push(document.getElementById("api-response").innerText);
-        localStorage.setItem("respostas", JSON.stringify(responses));
       } else {
         loadingMessage.textContent =
           "Desculpe, não consegui gerar uma resposta.";
