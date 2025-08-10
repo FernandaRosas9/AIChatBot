@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/FernandaRosas9/repository6#readme",
   "dependencies": {
-    "express": "^5.1.0",
-    "openai": "^5.12.0"
+    "express": "^5.1.0"
   }
 }
