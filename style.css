@@ -35,6 +35,10 @@ body {
   transition: background-color 0.5s, color 0.5s;
 }
 
+h2 {
+  font-family: "Nunito", serif;
+}
+
 .chat-window {
   width: 90%;
   max-width: 600px;
