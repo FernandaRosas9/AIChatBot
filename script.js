@@ -121,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
         buttonCopy.addEventListener("click", () => {
           const response = document.getElementsByClassName("api-responses")[document.getElementsByClassName("api-responses").length - 1].innerText;
           navigator.clipboard.writeText(response);
+          buttonCopy.textContent = "Copiado!";
         });
 
         responses.push(document.getElementById("api-response").innerText);
