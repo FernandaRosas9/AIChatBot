@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (responses.length <= 0) {
     addMessage(
-      "Olá! Eu sou a nIAh, sua Assistente de IA. Como posso te ajudar hoje?",
+      "Olá! Eu sou a nIA, sua Assistente de IA. Como posso te ajudar hoje?",
       "bot"
     );
   }
