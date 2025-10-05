@@ -1,6 +1,7 @@
 # nIAh - Sua Assistente de IA Pessoal (Baseado em Gemini)
 
 Este é um projeto de chatbot simples e interativo construído com **HTML, CSS e JavaScript** puro, que utiliza a **API do Gemini** para fornecer respostas inteligentes. O nome **nIAh** (ou o que você preferir!) representa uma assistente de IA moderna e útil.
+aqui esta um vídeo com a aplicação em uso: https://youtu.be/vdjNlg-rQjY
 
 ## ✨ Recursos
 
